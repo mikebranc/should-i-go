@@ -81,7 +81,7 @@ export default function CollegeCostCalculator() {
   };
 
   return (
-    <Card className="max-w-md mx-auto p-6">
+    <Card className="max-w-2xl w-full mx-auto p-6">
       <CardHeader>
         <CardTitle>College Cost Calculator</CardTitle>
         <CardDescription>Figure out the true cost of college</CardDescription>
