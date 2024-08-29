@@ -3,21 +3,30 @@ import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { InfoIcon } from 'lucide-react';
 
-import { calculateTotalInterestPaid } from '../utils';
+import { calculateTotalInterestPaid, calculateBreakEvenYears } from '../utils';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-const InfoTooltip = ({ content }: { content: string }) => (
+const STUDENT_LOAN_CALCULATION_LINK = "https://studentaid.gov/understand-aid/types/loans/interest-rates"
+
+const InfoTooltip = ({ content, footerLink }: { content: string; footerLink?: string }) => (
   <TooltipProvider>
     <UITooltip>
       <TooltipTrigger asChild>
         <InfoIcon className="h-4 w-4 ml-1 inline-block cursor-help" />
       </TooltipTrigger>
-      <TooltipContent>
-        <p>{content}</p>
+      <TooltipContent className="max-w-sm">
+        <div>{content}</div>
+        {footerLink && (
+          <div className="mt-2 text-xs">
+            <a href={footerLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline" style={{textDecoration: 'underline', color: 'blue'}}>
+              {footerLink}
+            </a>
+          </div>
+        )}
       </TooltipContent>
     </UITooltip>
   </TooltipProvider>
@@ -33,15 +42,18 @@ export default function CollegeCostCalculator() {
   const [totalCost, setTotalCost] = useState(0);
   const [loanInterest, setLoanInterest] = useState(0);
   const [opportunityCost, setOpportunityCost] = useState(0);
+  const [breakEvenYears, setBreakEvenYears] = useState<number | string>(0);
   const [showResults, setShowResults] = useState(false);
 
   const calculateCosts = () => {
     const interestCost = parseFloat(calculateTotalInterestPaid(loan, interest, 10));
     const opportunityCostValue = salaryWithoutCollege * 4; // Assuming 4 years of college
     const totalCostValue = Number(loan) + interestCost + opportunityCostValue;
+    const breakEven = calculateBreakEvenYears(totalCostValue, salaryWithCollege, salaryWithoutCollege);
     setLoanInterest(interestCost);
     setOpportunityCost(opportunityCostValue);
     setTotalCost(totalCostValue);
+    setBreakEvenYears(breakEven);
     setShowResults(true);
   };
   
@@ -158,7 +170,7 @@ export default function CollegeCostCalculator() {
               </p>
               <p>
                 Loan Interest: {formatCurrency(loanInterest)}
-                <InfoTooltip content="The total interest paid on your student loans over 10 years." />
+                <InfoTooltip content="The total interest paid on your student loans over 10 years. Uses daily simple interest. See more on how this is calulated here:" footerLink={STUDENT_LOAN_CALCULATION_LINK} />
               </p>
               <p>
                 Opportunity Cost: {formatCurrency(opportunityCost)}
@@ -185,6 +197,17 @@ export default function CollegeCostCalculator() {
                   <Tooltip content={<CustomTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
+            </div>
+            <div className="grid gap-2">
+              <h2 className="text-xl font-semibold">
+                Break-Even Point
+                <InfoTooltip content="The number of years it will take for your additional earnings from a college degree to offset the total cost of college." />
+              </h2>
+              <p>
+                {typeof breakEvenYears === 'number'
+                  ? `You will break even on your college investment in approximately ${breakEvenYears.toFixed(1)} years.`
+                  : breakEvenYears}
+              </p>
             </div>
           </div>
         </CardFooter>

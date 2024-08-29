@@ -20,15 +20,19 @@ export function calculateTotalInterestPaid(
     return totalInterestPaid.toFixed(2);
   }
   
-  // Example usage:
-  const loanAmount = 100000; // $100,000
-  const annualInterestRate = 5; // 5% interest rate
-  const loanDurationYears = 10; // 10 years
-  
-  const totalInterestPaid: string = calculateTotalInterestPaid(
-    loanAmount,
-    annualInterestRate,
-    loanDurationYears
-  );
-  console.log(`Total Interest Paid: $${totalInterestPaid}`);
+export function calculateBreakEvenYears(
+  collegeCost: number,
+  collegeSalary: number,
+  hsSalary: number
+): number | string {
+  const salaryDifference = collegeSalary - hsSalary;
+
+  if (salaryDifference <= 0) {
+    return "College salary does not exceed high school salary, break-even not possible.";
+  }
+
+  const breakEvenYears = collegeCost / salaryDifference;
+  return breakEvenYears;
+}
+
   
