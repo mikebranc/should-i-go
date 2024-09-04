@@ -13,12 +13,12 @@ import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger }
 const STUDENT_LOAN_CALCULATION_LINK = "https://studentaid.gov/understand-aid/types/loans/interest-rates"
 
 const InfoTooltip = ({ content, footerLink }: { content: string; footerLink?: string }) => (
-  <TooltipProvider>
+  <TooltipProvider delayDuration={0}>
     <UITooltip>
       <TooltipTrigger asChild>
         <InfoIcon className="h-4 w-4 ml-1 inline-block cursor-help" />
       </TooltipTrigger>
-      <TooltipContent className="max-w-sm">
+      <TooltipContent sideOffset={5} className="max-w-sm">
         <div>{content}</div>
         {footerLink && (
           <div className="mt-2 text-xs">
