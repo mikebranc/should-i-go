@@ -12,25 +12,32 @@ import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger }
 
 const STUDENT_LOAN_CALCULATION_LINK = "https://studentaid.gov/understand-aid/types/loans/interest-rates"
 
-const InfoTooltip = ({ content, footerLink }: { content: string; footerLink?: string }) => (
-  <TooltipProvider delayDuration={0}>
-    <UITooltip>
-      <TooltipTrigger asChild>
-        <InfoIcon className="h-4 w-4 ml-1 inline-block cursor-help" />
-      </TooltipTrigger>
-      <TooltipContent sideOffset={5} className="max-w-sm">
-        <div>{content}</div>
-        {footerLink && (
-          <div className="mt-2 text-xs">
-            <a href={footerLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline" style={{textDecoration: 'underline', color: 'blue'}}>
-              {footerLink}
-            </a>
-          </div>
-        )}
-      </TooltipContent>
-    </UITooltip>
-  </TooltipProvider>
-);
+const InfoTooltip = ({ content, footerLink }: { content: string; footerLink?: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <TooltipProvider>
+      <UITooltip open={isOpen} onOpenChange={setIsOpen}>
+        <TooltipTrigger asChild>
+          <InfoIcon
+            className="h-4 w-4 ml-1 inline-block cursor-help"
+            onClick={() => setIsOpen(!isOpen)}
+          />
+        </TooltipTrigger>
+        <TooltipContent sideOffset={5} className="max-w-sm">
+          <div>{content}</div>
+          {footerLink && (
+            <div className="mt-2 text-xs">
+              <a href={footerLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline" style={{textDecoration: 'underline', color: 'blue'}}>
+                {footerLink}
+              </a>
+            </div>
+          )}
+        </TooltipContent>
+      </UITooltip>
+    </TooltipProvider>
+  );
+};
 
 export default function CollegeCostCalculator() {
   const [tuition, setTuition] = useState(50000);
