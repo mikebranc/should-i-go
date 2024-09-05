@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 const STUDENT_LOAN_CALCULATION_LINK = "https://studentaid.gov/understand-aid/types/loans/interest-rates"
+const GITHUB_LINK = "https://github.com/mikebranc/should-i-go"
 
 const InfoTooltip = ({ content, footerLink }: { content: string; footerLink?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -103,7 +104,7 @@ export default function CollegeCostCalculator() {
     <Card className="max-w-2xl w-full mx-auto p-6">
       <CardHeader>
         <CardTitle>College Cost Calculator</CardTitle>
-        <CardDescription>Figure out the true cost of college</CardDescription>
+        <CardDescription>Calculate the true cost of college</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
@@ -219,6 +220,11 @@ export default function CollegeCostCalculator() {
           </div>
         </CardFooter>
       )}
+      <div className="mt-6 text-xs text-muted-foreground border-t pt-4">
+        <p>Disclaimer: This tool is designed to help you make a more informed decision when deciding what to do with your future. This program nor its creators are liable for any decisions you make based on the information this tool provides. All numbers are estimates and should not be considered financial advice. Remember that your future is in your hands, don't be scared to do what you know is best in your heart. People might disagree, but remember it's your life, not theirs.</p>
+        <br/>
+        <p>If you are interested in seeing how everything is calculated, check out the source code <a href={GITHUB_LINK} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline" style={{textDecoration: 'underline', color: 'blue'}}>here</a></p>
+      </div>
     </Card>
   );
 }
