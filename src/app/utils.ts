@@ -3,18 +3,26 @@ export function calculateTotalInterestPaid(
     annualInterestRate: number,
     loanDurationYears: number
   ): string {
-    const averageMonthLength = 365 / 12; // Average number of days per month
-    const dailyInterestRate = annualInterestRate / 365 / 100;
+    const monthlyInterestRate = annualInterestRate / 12 / 100;
     const totalMonths = loanDurationYears * 12;
+  
+    // Calculate fixed monthly payment using the loan payment formula
+    const monthlyPayment =
+      loanAmount *
+      (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalMonths)) /
+      (Math.pow(1 + monthlyInterestRate, totalMonths) - 1);
+  
     let remainingBalance = loanAmount;
     let totalInterestPaid = 0;
   
     for (let month = 1; month <= totalMonths; month++) {
-      const interestForMonth = remainingBalance * dailyInterestRate * averageMonthLength;
-      const principalPayment = loanAmount / totalMonths; // Simple amortization
-      
+      const interestForMonth = remainingBalance * monthlyInterestRate;
+      const principalPayment = monthlyPayment - interestForMonth;
       totalInterestPaid += interestForMonth;
-      remainingBalance -= principalPayment; // Decrease the remaining balance
+      remainingBalance -= principalPayment;
+  
+      console.log(`Interest for month ${month}: ${interestForMonth.toFixed(2)}`);
+      console.log(`Principal payment for month ${month}: ${principalPayment.toFixed(2)}`);
     }
   
     return totalInterestPaid.toFixed(2);
