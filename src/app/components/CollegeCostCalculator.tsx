@@ -178,7 +178,7 @@ export default function CollegeCostCalculator() {
               </p>
               <p>
                 Loan Interest: {formatCurrency(loanInterest)}
-                <InfoTooltip content="The total interest paid on your student loans over 10 years. Uses daily simple interest. See more on how this is calulated here:" footerLink={STUDENT_LOAN_CALCULATION_LINK} />
+                <InfoTooltip content="The total interest paid on your student loans assuming a 10 year loan. Uses daily simple interest. See more on how this is calulated here:" footerLink={STUDENT_LOAN_CALCULATION_LINK} />
               </p>
               <p>
                 Opportunity Cost: {formatCurrency(opportunityCost)}
