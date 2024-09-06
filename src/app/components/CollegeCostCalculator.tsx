@@ -56,7 +56,7 @@ export default function CollegeCostCalculator() {
   const calculateCosts = () => {
     const interestCost = parseFloat(calculateTotalInterestPaid(loan, interest, 10));
     const opportunityCostValue = salaryWithoutCollege * 4; // Assuming 4 years of college
-    const totalCostValue = Number(loan) + interestCost + opportunityCostValue;
+    const totalCostValue = tuition + interestCost + opportunityCostValue;
     const breakEven = calculateBreakEvenYears(totalCostValue, salaryWithCollege, salaryWithoutCollege);
     setLoanInterest(interestCost);
     setOpportunityCost(opportunityCostValue);
