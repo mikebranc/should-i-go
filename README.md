@@ -16,7 +16,7 @@ To run this project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/college-cost-calculator.git
+   git clone https://github.com/mikebranc/should-i-go.git
    cd college-cost-calculator
    ```
 
