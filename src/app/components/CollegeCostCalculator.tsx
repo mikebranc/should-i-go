@@ -43,7 +43,7 @@ const InfoTooltip = ({ content, footerLink }: { content: string; footerLink?: st
 export default function CollegeCostCalculator() {
   const [tuition, setTuition] = useState(50000);
   const [loan, setLoan] = useState(40000);
-  const [interest, setInterest] = useState(5);
+  const [interest, setInterest] = useState<string>('5');
   const [salaryWithoutCollege, setSalaryWithoutCollege] = useState(35000);
   const [salaryWithCollege, setSalaryWithCollege] = useState(55000);
 
@@ -60,7 +60,7 @@ export default function CollegeCostCalculator() {
   }, [tuition, loan, interest, salaryWithoutCollege, salaryWithCollege]);
 
   const calculateCosts = () => {
-    const interestCost = parseFloat(calculateTotalInterestPaid(loan, interest, 10));
+    const interestCost = parseFloat(calculateTotalInterestPaid(loan, parseFloat(interest), 10));
     const opportunityCostValue = salaryWithoutCollege * 4; // Assuming 4 years of college
     const totalCostValue = tuition + interestCost + opportunityCostValue;
     const breakEven = calculateBreakEvenYears(totalCostValue, salaryWithCollege, salaryWithoutCollege);
@@ -101,6 +101,14 @@ export default function CollegeCostCalculator() {
   const handleCurrencyInput = (value: string, setter: React.Dispatch<React.SetStateAction<number>>) => {
     const numericValue = parseInt(value.replace(/[^0-9]/g, ''), 10);
     setter(isNaN(numericValue) ? 0 : numericValue);
+  };
+
+  const handleInterestInput = (value: string) => {
+    // Allow empty input, digits, and up to one decimal point
+    const regex = /^$|^\d*\.?\d*$/;
+    if (regex.test(value) && (value === '' || parseFloat(value) <= 100)) {
+      setInterest(value);
+    }
   };
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -145,15 +153,14 @@ export default function CollegeCostCalculator() {
           <Input
             id="interest"
             type="text"
-            value={interest === 0 ? '' : interest}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^0-9.]/g, '');
-              const numericValue = parseFloat(value);
-              setInterest(isNaN(numericValue) ? 0 : Math.min(numericValue, 100));
-            }}
+            value={interest}
+            onChange={(e) => handleInterestInput(e.target.value)}
             onBlur={() => {
-              if (interest !== 0) {
-                setInterest(Number(interest.toFixed(2)));
+              const numericValue = parseFloat(interest);
+              if (!isNaN(numericValue)) {
+                setInterest(numericValue.toFixed(2));
+              } else if (interest === '') {
+                setInterest('0');
               }
             }}
           />
