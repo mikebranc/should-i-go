@@ -83,6 +83,15 @@ export default function CollegeCostCalculator() {
     }).format(value);
   };
 
+  const formatCurrencyWithCents = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
+
   const handleCurrencyInput = (value: string, setter: React.Dispatch<React.SetStateAction<number>>) => {
     const numericValue = parseInt(value.replace(/[^0-9]/g, ''), 10);
     setter(isNaN(numericValue) ? 0 : numericValue);
@@ -93,7 +102,7 @@ export default function CollegeCostCalculator() {
       const data = payload[0].payload;
       return (
         <div className="custom-tooltip p-2 border border-gray-300 rounded shadow-md" style={{backgroundColor: '#FAFAFA', padding: '10px'}}>
-          <p className="text-sm font-semibold">{`${data.name}: ${formatCurrency(data.value)}`}</p>
+          <p className="text-sm font-semibold">{`${data.name}: ${formatCurrencyWithCents(data.value)}`}</p>
         </div>
       );
     }
@@ -168,20 +177,20 @@ export default function CollegeCostCalculator() {
           <div className="grid gap-4 w-full">
             <div>
               <h3 className="font-semibold">Total Cost</h3>
-              <p className="text-4xl font-bold">{formatCurrency(totalCost)}</p>
+              <p className="text-4xl font-bold">{formatCurrencyWithCents(totalCost)}</p>
             </div>
             <div className="grid gap-2">
               <h3 className="font-semibold">Cost Breakdown</h3>
               <p>
-                Tuition: {formatCurrency(tuition)}
+                Tuition: {formatCurrencyWithCents(tuition)}
                 <InfoTooltip content="The direct cost of attending college for four years." />
               </p>
               <p>
-                Loan Interest: {formatCurrency(loanInterest)}
+                Loan Interest: {formatCurrencyWithCents(loanInterest)}
                 <InfoTooltip content="The total interest paid on your student loans assuming a 10 year loan. Uses daily simple interest. See more on how this is calulated here:" footerLink={STUDENT_LOAN_CALCULATION_LINK} />
               </p>
               <p>
-                Opportunity Cost: {formatCurrency(opportunityCost)}
+                Opportunity Cost: {formatCurrencyWithCents(opportunityCost)}
                 <InfoTooltip content="The income you could have earned if you worked instead of attending college for four years." />
               </p>
             </div>
