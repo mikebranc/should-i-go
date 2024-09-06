@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { InfoIcon } from 'lucide-react';
 
@@ -52,6 +52,12 @@ export default function CollegeCostCalculator() {
   const [opportunityCost, setOpportunityCost] = useState(0);
   const [breakEvenYears, setBreakEvenYears] = useState<number | string>(0);
   const [showResults, setShowResults] = useState(false);
+
+  useEffect(() => {
+    if (showResults) {
+      calculateCosts();
+    }
+  }, [tuition, loan, interest, salaryWithoutCollege, salaryWithCollege]);
 
   const calculateCosts = () => {
     const interestCost = parseFloat(calculateTotalInterestPaid(loan, interest, 10));
