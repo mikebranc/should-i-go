@@ -20,9 +20,6 @@ export function calculateTotalInterestPaid(
       const principalPayment = monthlyPayment - interestForMonth;
       totalInterestPaid += interestForMonth;
       remainingBalance -= principalPayment;
-  
-      console.log(`Interest for month ${month}: ${interestForMonth.toFixed(2)}`);
-      console.log(`Principal payment for month ${month}: ${principalPayment.toFixed(2)}`);
     }
   
     return totalInterestPaid.toFixed(2);

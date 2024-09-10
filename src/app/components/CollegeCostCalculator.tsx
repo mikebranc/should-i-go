@@ -46,6 +46,7 @@ export default function CollegeCostCalculator() {
   const [interest, setInterest] = useState<string>('5');
   const [salaryWithoutCollege, setSalaryWithoutCollege] = useState(35000);
   const [salaryWithCollege, setSalaryWithCollege] = useState(55000);
+  const [schoolYears, setSchoolYears] = useState<string>('4');
 
   const [totalCost, setTotalCost] = useState(0);
   const [loanInterest, setLoanInterest] = useState(0);
@@ -61,7 +62,7 @@ export default function CollegeCostCalculator() {
 
   const calculateCosts = () => {
     const interestCost = parseFloat(calculateTotalInterestPaid(loan, parseFloat(interest), 10));
-    const opportunityCostValue = salaryWithoutCollege * 4; // Assuming 4 years of college
+    const opportunityCostValue = salaryWithoutCollege * (parseInt(schoolYears) || 0);
     const totalCostValue = tuition + interestCost + opportunityCostValue;
     const breakEven = calculateBreakEvenYears(totalCostValue, salaryWithCollege, salaryWithoutCollege);
     setLoanInterest(interestCost);
@@ -108,6 +109,13 @@ export default function CollegeCostCalculator() {
     const regex = /^$|^\d*\.?\d*$/;
     if (regex.test(value) && (value === '' || parseFloat(value) <= 100)) {
       setInterest(value);
+    }
+  };
+
+  const handleSchoolYearsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '' || (/^\d+$/.test(value) && parseInt(value) > 0)) {
+      setSchoolYears(value);
     }
   };
 
@@ -166,6 +174,20 @@ export default function CollegeCostCalculator() {
           />
         </div>
         <div className="grid gap-2">
+          <Label htmlFor="school-years">Years in School</Label>
+          <Input
+            id="school-years"
+            type="text"
+            value={schoolYears}
+            onChange={handleSchoolYearsChange}
+            onBlur={() => {
+              if (schoolYears === '') {
+                setSchoolYears('4'); // Default to 4 if left blank
+              }
+            }}
+          />
+      </div>
+        <div className="grid gap-2">
           <Label htmlFor="no-college">Salary without College</Label>
           <Input
             id="no-college"
@@ -196,7 +218,7 @@ export default function CollegeCostCalculator() {
               <h3 className="font-semibold">Cost Breakdown</h3>
               <p>
                 Tuition: {formatCurrencyWithCents(tuition)}
-                <InfoTooltip content="The direct cost of attending college for four years." />
+                <InfoTooltip content="The direct cost of attending college." />
               </p>
               <p>
                 Loan Interest: {formatCurrencyWithCents(loanInterest)}
@@ -204,7 +226,9 @@ export default function CollegeCostCalculator() {
               </p>
               <p>
                 Opportunity Cost: {formatCurrencyWithCents(opportunityCost)}
-                <InfoTooltip content="The income you could have earned if you worked instead of attending college for four years." />
+                <InfoTooltip 
+                  content={`The income you could have earned if you worked instead of attending college for ${schoolYears} year${parseInt(schoolYears) !== 1 ? 's' : ''}.`}
+                />
               </p>
             </div>
             <div className="grid gap-4">

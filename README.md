@@ -47,7 +47,7 @@ The main components of this project are:
 ## Calculations and assumptions
 
 ### Opportunity cost calculation
-Opportunity cost is calculated by multiplying your annual high school salary by 4 (the 4 years you spend in college).
+Opportunity cost is calculated by multiplying your annual high school salary by the number of years spent in college.
 
 ### Breakeven calculation
 The breakeven point is calculated by finding the intersection of two lines: one representing the cumulative earnings without a college degree, and another representing the cumulative earnings with a college degree minus the total cost of education. This can be modeled by the following equation:
@@ -60,7 +60,7 @@ H = annual salary with high school diploma
 C = annual salary with college degree
 T = total tuition cost
 I = total interest cost on student loans
-O = opportunity cost (4 * H)
+O = opportunity cost (Y * H), where Y is the number of years spent in college
 
 Solving for t gives us the breakeven point in years:
 
